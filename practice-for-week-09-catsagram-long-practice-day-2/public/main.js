@@ -71,7 +71,7 @@ export const createMainContent = () => {
         count.innerText = 'Popularity Score: ' + voteCounter;
     });
 
-    //create form 
+    //create form
     const form = document.createElement('form');
     const inputLabel = document.createElement('label');
     inputLabel.innerText = 'Comment:';
@@ -92,8 +92,36 @@ export const createMainContent = () => {
 
     //create comment container
     const commentContainer = document.createElement('ul');
-    
+    commentContainer.style.border = '2px solid lightgray';
+    commentContainer.style.borderRadius = '4px';
+    commentContainer.style.height = '250px';
+    commentContainer.style.width = '50%';
 
+    //comment functionality
+
+    const addLi = e => {
+        e.preventDefault();
+        if (commentInput.value.length) {
+            const value = commentInput.value;
+            const newLi = document.createElement('li');
+            newLi.innerText = value;
+            commentContainer.appendChild(newLi);
+            commentInput.value = '';
+            const deleteBtn = document.createElement('button');
+            deleteBtn.innerText = 'Delete';
+            newLi.appendChild(deleteBtn);
+
+            //delete functionality
+
+            const deleteLi = e => {
+                newLi.remove();
+            }
+
+            deleteBtn.addEventListener('click', deleteLi);
+        }
+    }
+
+    formBtn.addEventListener('click', addLi);
 
     //container
     const container = document.querySelector(".container");
@@ -111,6 +139,7 @@ export const createMainContent = () => {
 
         voteCounter = 0;
         count.innerText = 'Popularity Score: ' + voteCounter;
+        commentContainer.innerHTML = '';
     })
 
     fetchImage();

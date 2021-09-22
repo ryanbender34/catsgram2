@@ -1,0 +1,20 @@
+ul {
+    overflow-x: scroll;
+    padding: 0;
+}
+
+li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+
+li:nth-child(even) {
+    /* background-color: rgba(255, 255, 255, 0.5); */
+    background-color: lightgray;
+}
+
+img {
+    width: 50%;
+}
