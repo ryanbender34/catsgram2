@@ -8,11 +8,26 @@ export const createMainContent = () => {
     img.style.margin = "20px";
     img.style.maxWidth = "750px";
 
+    //create button
+    const button = document.createElement('button');
+    button.setAttribute('class', 'btn');
+    button.innerText = 'Next Cat'
+    button.style.padding = "10px 20px";
+
+    //container
     const container = document.querySelector(".container");
     container.appendChild(h1);
+    container.appendChild(button);
     container.appendChild(img);
 
+    //fetch next image
+    button.addEventListener('click', e => {
+        fetchImage();
+    })
+
     fetchImage();
+
+
 };
 
 const fetchImage = async () => {
