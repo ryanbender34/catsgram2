@@ -71,6 +71,30 @@ export const createMainContent = () => {
         count.innerText = 'Popularity Score: ' + voteCounter;
     });
 
+    //create form 
+    const form = document.createElement('form');
+    const inputLabel = document.createElement('label');
+    inputLabel.innerText = 'Comment:';
+    inputLabel.style.marginRight = '4px';
+    inputLabel.setAttribute('name', 'comment-input');
+    const commentInput = document.createElement('input');
+    commentInput.setAttribute('id', 'comment');
+    commentInput.setAttribute('type', 'text');
+    commentInput.setAttribute('placeholder', 'Add a comment...');
+    const formBtn = document.createElement('button');
+    formBtn.innerText = 'Submit';
+    formBtn.style.marginLeft = "4px";
+
+    form.appendChild(inputLabel);
+    form.appendChild(commentInput);
+    form.appendChild(formBtn);
+
+
+    //create comment container
+    const commentContainer = document.createElement('ul');
+    
+
+
     //container
     const container = document.querySelector(".container");
     container.appendChild(h1);
@@ -78,6 +102,8 @@ export const createMainContent = () => {
     container.appendChild(img);
     container.appendChild(count);
     container.appendChild(btnContainer);
+    container.appendChild(form);
+    container.appendChild(commentContainer);
 
     //fetch next image
     button.addEventListener('click', e => {
