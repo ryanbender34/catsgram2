@@ -53,22 +53,24 @@ export const createMainContent = () => {
 
     let voteCounter = 0;
     const count = document.createElement('p');
-    count.innerText = 'Popularity Score: ' + voteCounter;
+    count.innerHTML = 'Popularity Score: ' + `<span id="count">${voteCounter}</span>`;
 
     //Up vote count
 
     upButton.addEventListener('click', e => {
         console.log('test');
         voteCounter++;
-        count.innerText = 'Popularity Score: ' + voteCounter;
-        console.log(voteCounter);
+        storeCount(voteCounter);
+        count.innerHTML = 'Popularity Score: ' + `<span id="count">${voteCounter}</span>`;
+        // console.log(voteCounter);
     });
-
+    
     //Down vote count
-
+    
     downButton.addEventListener('click', e => {
         voteCounter--;
-        count.innerText = 'Popularity Score: ' + voteCounter;
+        storeCount(voteCounter);
+        count.innerHTML = 'Popularity Score: ' + `<span id="count">${voteCounter}</span>`;
     });
 
     //create form
@@ -110,6 +112,9 @@ export const createMainContent = () => {
             const deleteBtn = document.createElement('button');
             deleteBtn.innerText = 'Delete';
             newLi.appendChild(deleteBtn);
+            const ul = document.querySelector('ul');
+            storeComment(ul);
+            console.log(commentContainer.children[0].innerText);
 
             //delete functionality
 
@@ -136,17 +141,93 @@ export const createMainContent = () => {
     //fetch next image
     button.addEventListener('click', e => {
         fetchImage();
-
         voteCounter = 0;
         count.innerText = 'Popularity Score: ' + voteCounter;
         commentContainer.innerHTML = '';
+        clearCount();
     })
-
-    fetchImage();
-
-
+    
+    restoreImage();
+    restoreCount();
+    restoreComment();
+    // restoreImage();
+    // storeImage(fetchImage());
+    // let count = document.getElementById('count');
+    
+    
 };
 
+function storeImage(image) {
+    // const catImg = `catImg=${image}`;
+    localStorage.setItem('image', image);
+}
+
+function restoreImage() {
+    let image = localStorage.getItem('image');
+    if (image) {
+        // storeImage(image);
+        //set src of img tag 
+        let kittenImg = document.querySelector('img');
+        kittenImg.src = image;
+    } else {
+        fetchImage();
+    }
+}
+
+function storeCount(count) {
+    localStorage.setItem('count', count);
+}
+
+function restoreCount() {
+    let count = localStorage.getItem('count');
+    if(count) {
+        let countVal = document.querySelector('#count');
+        countVal.innerText = count;
+    }
+}
+
+function clearCount() {
+    localStorage.removeItem('count');
+}
+
+function storeComment(commentList) {
+    // let commentNo = 2;
+    // if(comment) {
+    //     localStorage.setItem(`comment${commentNo}`, comment);
+    //     commentNo += 1;
+    // }
+    // console.log(commentList);
+    localStorage.setItem('commentList', JSON.stringify(Array.from(commentList.children).map(li => {
+        return li.outerHTML;
+    })));
+    // console.log(commentList.children);
+    console.log(Array.from(commentList.children).map(li => {
+        return li.outerHTML;
+    }))
+}
+
+function restoreComment() {
+let commentL = JSON.parse(localStorage.getItem('commentList'));
+console.log(commentL);
+if(commentL) {
+    let commentContainer = document.querySelector('ul');
+    // commentContainer = commentL;
+    commentContainer.innerHTML = commentL.join('');
+    // console.log(commentL);
+    //adding event listeners
+
+    // deleteBtn.addEventListener('click', deleteLi);
+    const allLi = document.querySelectorAll('li');
+    allLi.forEach(newLi => {
+        newLi.addEventListener('click', (e) => {
+            if(e.target.innerText === 'Delete') {
+                newLi.remove();
+            };
+
+        });
+    })
+}
+}
 
 const fetchImage = async () => {
     // Fetch image from API and set img url
@@ -157,6 +238,7 @@ const fetchImage = async () => {
         // console.log(kittenData);
         const kittenImg = document.querySelector("img");
         kittenImg.src = kittenData[0].url;
+        storeImage(kittenData[0].url);
     } catch (e) {
         console.log("Failed to fetch image", e);
     }
