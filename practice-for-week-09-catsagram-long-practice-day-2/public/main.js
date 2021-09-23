@@ -76,7 +76,7 @@ export const createMainContent = () => {
     const inputLabel = document.createElement('label');
     inputLabel.innerText = 'Comment:';
     inputLabel.style.marginRight = '4px';
-    inputLabel.setAttribute('name', 'comment-input');
+    inputLabel.setAttribute('name', 'comment');
     const commentInput = document.createElement('input');
     commentInput.setAttribute('id', 'comment');
     commentInput.setAttribute('type', 'text');
